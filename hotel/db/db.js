@@ -70,7 +70,7 @@ function insert(tabname, data, callback) {
     });
 
 }
-
+//查询所有数据
 function select(tabname, callback) {
     let sql = `select * from \`${tabname}\``;
     query(sql, function(res) {
@@ -84,7 +84,7 @@ function select(tabname, callback) {
     });
 }
 
-
+//根据ID倒叙查询
 function select_back(tabname, callback) {
     let sql = `select * from \`${tabname}\` ORDER BY id DESC`;
     query(sql, function(res) {
@@ -98,6 +98,23 @@ function select_back(tabname, callback) {
     });
 }
 
+//根据ID查询数据
+function select_ID(tabname,data,callback){
+    let ID_Where = '';
+    for (var i in data) {
+        ID_Where += `${i}='${data[i]}'`
+    }
+    let sql = `SELECT * FROM \`${tabname}\` WHERE ${ID_Where}`;
+    query(sql,function(res){
+        var json = '';
+        if (res) {
+            json = format_data(0, '查询数据成功', res);
+        } else {
+            json = format_data(1, '查询失败');
+        }
+        callback(json);
+    })
+}
 // { fid:1}
 // {fid:1,username:'1',password:1}
 function selectWhere(tabname, data, callback) {
@@ -117,16 +134,5 @@ function selectWhere(tabname, data, callback) {
         callback(json);
     });   
 }
-function renderList(tabname,data,callback){
-    let sql = `select * from \`${tabname}\``;
-    query(sql, function(res) {
-        var json = '';
-        if (res) {
-            json = format_data(0, '查询数据成功', res);
-        } else {
-            json = format_data(1, '查询失败');
-        }
-        callback(json);
-    });   
-}
-module.exports = { insert, select, selectWhere,select_back,renderList }
+
+module.exports = { insert, select, selectWhere,select_back,select_ID}

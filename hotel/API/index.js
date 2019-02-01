@@ -1,7 +1,6 @@
-// var newsRouter=require('./news');
+var adminRouter=require('./admin');
 // var articleRouter=require('./article');
 var objRouter={
-    // '/news':newsRouter,
-    // '/article':articleRouter
+    '/admin':adminRouter,
 }
 module.exports=objRouter;
