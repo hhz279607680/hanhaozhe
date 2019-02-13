@@ -20,7 +20,6 @@
 <script>
     //管理员的新增
     $('#OK').on('click', function () {
-        debugger
         $.ajax({
             url: '/API/admin/admin_add',
             type: 'post',
@@ -54,7 +53,6 @@
         })
     })
     $('#xiugai').on('click', function () {
-        debugger
         //根据管理员ID去修改密码，在这里默认ID为1，前提数据库必须有数据
         $.ajax({
             url: '/API/admin/select_ID',
@@ -68,6 +66,41 @@
             error: function (e) {
                 debugger
             }
+        })
+    })
+</script>
+<script>
+    //价格的查询
+    $('#money').on('click',function(){
+       $.ajax({
+        url:'/API/hostmoney/money_add',
+        type:'post',
+        data:{
+            S_money:$('#s_jia').val(),
+            hotelName:$('#type').val(),
+            D_money:$('#t_jia').val(),
+            M_money:$('#y_jia').val(),
+        },
+        success:function(e){
+            alert('成功插入数据')
+            debugger
+        },
+        error:function(e){
+            debugger
+        }
+       })
+    });
+    $('#sele').on('click',function(){
+        debugger
+        $.ajax({
+           url:'/API/hostmoney/money_select',
+           type:'post',
+           success:function(e){
+               $('body').html(e);
+           },
+           error:function(e){
+               debugger
+           }
         })
     })
 </script>
