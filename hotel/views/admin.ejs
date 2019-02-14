@@ -10,13 +10,91 @@
 </head>
 
 <body>
+    <!-- 管理员 -->
     <input id="q1" type="text" placeholder="1">
     <input id="q2" type="text" placeholder="2">
     <input id="q3" type="text" placeholder="3">
     <button id="OK">提交</button>
     <button id="mod">获取所有管理数据</button>
     <button id="xiugai">修改</button>
+    <br>
+    <!-- 价格 -->
+    <input type="text" id="s_jia">
+    <select name="" id="type">
+        <option class="" value="1">123</option>
+    </select>
+    <input type="text" id="t_jia">
+    <input type="text" id="y_jia">
+    <button id="money">提交价格</button>
+    <button id="sele">查询价格</button>
+    <button id="XG">修改价格</button>
+    <br>
+    <!-- 房间类型 -->
+    <input type="text" id="measure" placeholder="房屋面积">
+    <input type="text" id="type_name" placeholder="类型名称">
+    <input type="text" id="Bed" placeholder="床位数量">网络
+    <select name="" id="network" aria-placeholder="网络">
+        <option value="无">无</option>
+        <option value="有">有</option>
+    </select>浴室
+    <select name="" id="Shower" aria-placeholder="浴室">
+        <option value="无">无</option>
+        <option value="有">有</option>
+    </select>早餐
+    <select name="" id="breakfast" aria-placeholder="早餐">
+        <option value="无">无</option>
+        <option value="有">有</option>
+    </select>电视
+    <select name="" id="TV" aria-placeholder="电视">
+        <option value="无">无</option>
+        <option value="有">有</option>
+    </select>
+    <button id="roomtype_">提交</button>
+    <button id="sele_roomtype">查询房间类型</button>
+    <button id="updata_roomtype">修改房间类型</button>
+    <button id="dele_roomtype">删除房间类型</button>
+    <br>
+    <!-- 房间具题内容 -->
+    <input type="text" id="roomNUM" placeholder="房间号">
+    类型
+    <select name="" id="typeID">
+
+    </select>
+    <input type="text" id="state" placeholder="入住状态">
+    地址
+    <select name="" id="AddID">
+
+    </select>
+    <input type="text" id="room_MS" placeholder="房间描述">
+    <button id="room">提交</button>
+    <button id="room_sele">查询所有房间</button>
+    <button id="room_updata">修改房间内容</button>
+    <button id="room_dele">删除房间内容</button>
+    <br>
+    <!-- 地址 -->
+    <input type="text" id="Adds">
+    <button id="add">提交</button>
+    <button id="add_sele">查询所有地址</button>
+    <button id="add_updata">修改地址</button>
+    <button id="delete_add">删除地址</button>
+    <br>
+    <!-- 顾客 -->
+    <input type="text" id="card" placeholder="证件">
+    <select name="" id="cardType">
+            <option value="身份证">身份证</option>
+            <option value="学生证">学生证</option>
+            <option value="军人证">军人证</option>
+        </select>
+    <select name="" id="sex">
+        <option value="男">男</option>
+        <option value="女">女</option>
+    </select>
+    <input type="text" id="name" placeholder="姓名">
+    <button id="custom_add">提交</button>
+    <button id="custom_sele">查询</button>
+    <button id="custom_updata">修改顾客信息</button>
 </body>
+<!-- 管理员 -->
 <script>
     //管理员的新增
     $('#OK').on('click', function () {
@@ -30,6 +108,7 @@
             },
             success: function (e) {
                 alert('注册成功');
+                window.localStorage.setItem('user', 1)
                 $('body').html(e);
                 debugger
             },
@@ -45,20 +124,336 @@
             type: 'post',
             success: function (e) {
                 var obj = JSON.parse(e);
-                $('body').html(obj);
+                $('body').html(e);
+            },
+            error: function (e) {
+                debugger;
+            }
+        })
+    });
+    //管理员的修改
+    $('#xiugai').on('click', function () {
+        //根据管理员ID去修改密码，在这里默认ID为1，前提数据库必须有数据
+        $.ajax({
+            url: '/API/admin/updata_',
+            type: 'post',
+            data: {
+                'ID': 1,
+                'UserName': $('#q1').val(),
+                'password': $('#q2').val(),
+                'phonenum': $('#q3').val()
+            },
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //管理员的删除
+    
+</script>
+<!-- 价格 -->
+<script>
+    //价格的添加
+    $('#money').on('click', function () {
+        $.ajax({
+            url: '/API/hostmoney/money_add',
+            type: 'post',
+            data: {
+                S_money: $('#s_jia').val(),
+                hotelName: $('#type').val(),
+                D_money: $('#t_jia').val(),
+                M_money: $('#y_jia').val(),
+            },
+            success: function (e) {
+                var obj = JSON.parse(e);
+                debugger
+                alert('成功插入数据')
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //价格的查询
+    $('#sele').on('click', function () {
+        $.ajax({
+            url: '/API/hostmoney/money_select',
+            type: 'post',
+            success: function (e) {
+                var obj = JSON.parse(e);
+                debugger
+                // $('body').html(e);
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //价格的修改
+    $('#XG').on('click', function () {
+        $.ajax({
+            url: '/API/hostmoney/money_updata',
+            type: 'post',
+            data: {
+                'ID': 1,
+                S_money: $('#s_jia').val(),
+                hotelName: $('#type').val(),
+                D_money: $('#t_jia').val(),
+                M_money: $('#y_jia').val(),
+            },
+            success: function (e) {
+                debugger;
             },
             error: function (e) {
                 debugger;
             }
         })
     })
-    $('#xiugai').on('click', function () {
-        //根据管理员ID去修改密码，在这里默认ID为1，前提数据库必须有数据
+</script>
+<!-- 房间类型 -->
+<script>
+    //房间类型储存
+    $('#roomtype_').on('click', function () {
         $.ajax({
-            url: '/API/admin/select_ID',
+            url: '/API/roomtype/roomtype_add',
             type: 'post',
             data: {
-                'ID': 1
+                'measure': $('#measure').val(),
+                'type_name': $('#type_name').val(),
+                'Bed': $('#Bed').val(),
+                'network': $('#network').val(),
+                'Shower': $('#Shower').val(),
+                'breakfast': $('#breakfast').val(),
+                'TV': $('#TV').val()
+            },
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //房间类型查询
+    $('#sele_roomtype').on('click', function (e) {
+        $.ajax({
+            url: '/API/roomtype/roomtype_select',
+            type: 'post',
+            success: function (e) {
+                alert('1');
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //修改房间类型
+    $('#updata_roomtype').on('click', function (e) {
+        $.ajax({
+            url: '/API/roomtype/roomtype_updata',
+            type: 'post',
+            data: {
+                'ID': 1,
+                'measure': $('#measure').val(),
+                'type_name': $('#type_name').val(),
+                'Bed': $('#Bed').val(),
+                'network': $('#network').val(),
+                'Shower': $('#Shower').val(),
+                'breakfast': $('#breakfast').val(),
+                'TV': $('#TV').val()
+            },
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //房间类型的删除
+    $('#dele_roomtype').on('click',function(){
+        $.ajax({
+            url:'/API/roomtype/delete_',
+            type:'post',
+            data:{
+                'ID':2,
+            },
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
+        })
+    })
+</script>
+<!-- 房间详情 -->
+<script>
+    //类型的渲染
+    $.ajax({
+        url: '/API/roomtype/roomtype_select',
+        type: 'post',
+        success: function (e) {
+            var obj = JSON.parse(e);
+            var html = '';
+            for (var i in obj.data) {
+                html += ` <option value="${obj.data[i].ID}">${obj.data[i].type_name}</option>`
+            }
+            $('#typeID').html(html);
+        },
+        error: function (e) {
+            debugger
+        }
+    });
+    //地址的渲染
+    $.ajax({
+        url: '/API/add/adds_select',
+        type: 'post',
+        success: function (e) {
+            var obj = JSON.parse(e);
+            var html_ = '';
+            for (var i in obj.data) {
+                html_ += ` <option value="${obj.data[i].ID}">${obj.data[i].add_}</option>`
+            }
+            $('#AddID').html(html_);
+        },
+        error: function (e) {
+            debugger
+        }
+    })
+
+    // 房间的添加
+    $('#room').on('click', function () {
+        $.ajax({
+            url: '/API/room/room_add',
+            type: 'post',
+            data: {
+                'roomNUM': $('#roomNUM').val(),
+                'typeID': $('#typeID').val(),
+                'state': $('#state').val(),
+                'AddID': $('#AddID').val(),
+                'room_MS': $('#room_MS').val(),
+            },
+            success: function (e) {
+                alert('房间添加成功')
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    });
+    //房间信息的查询
+    $('#room_sele').on('click', function () {
+        $.ajax({
+            url: '/API/room/room_select',
+            type: 'post',
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    })
+    //房间信息的修改
+    $('#room_updata').on('click', function () {
+        $.ajax({
+            url: '/API/room/room_updata',
+            type: 'post',
+            data: {
+                'ID':1,
+                'roomNUM': $('#roomNUM').val(),
+                'typeID': $('#typeID').val(),
+                'state': $('#state').val(),
+                'AddID': $('#AddID').val(),
+                'room_MS': $('#room_MS').val(),
+            },
+            success: function (e) {
+                alert('房间修改成功');
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    })
+    //房间信息的删除
+    $('#room_dele').on('click',function(){
+        $.ajax({
+            url:'/API/room/delete_',
+            type:'post',
+            data:{
+                ID:2
+            },
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
+        })
+    })
+</script>
+<!-- 地址 -->
+<script>
+    //添加地址
+    $('#add').on('click', function () {
+        $.ajax({
+            url: '/API/add/adds_add',
+            type: 'post',
+            data: {
+                'add_': $('#Adds').val(),
+            },
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    })
+    //查询所有地质
+    $('#add_sele').on('click', function () {
+        $.ajax({
+            url: '/API/add/adds_select',
+            type: 'post',
+            success: function (e) {
+                debugger
+            },
+            error: function (e) {
+                debugger
+            }
+        })
+    })
+    //修改地址
+    $('#add_updata').on('click',function(){
+        $.ajax({
+            url:'/API/add/updata_',
+            type:'post',
+            data:{
+                'ID':1,
+                'add_': $('#Adds').val(),
+            },
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
+        })
+    })
+    //地址的删除
+    $('#delete_add').on('click',function(){
+        $.ajax({
+            url: '/API/add/delete_',
+            type: 'post',
+            data: {
+                'ID': 5,
             },
             success: function (e) {
                 debugger
@@ -69,40 +464,61 @@
         })
     })
 </script>
+<!-- 顾客 -->
 <script>
-    //价格的查询
-    $('#money').on('click',function(){
-       $.ajax({
-        url:'/API/hostmoney/money_add',
-        type:'post',
-        data:{
-            S_money:$('#s_jia').val(),
-            hotelName:$('#type').val(),
-            D_money:$('#t_jia').val(),
-            M_money:$('#y_jia').val(),
-        },
-        success:function(e){
-            alert('成功插入数据')
-            debugger
-        },
-        error:function(e){
-            debugger
-        }
-       })
-    });
-    $('#sele').on('click',function(){
-        debugger
+    // 顾客的新增
+    $('#custom_add').on('click',function(){
         $.ajax({
-           url:'/API/hostmoney/money_select',
-           type:'post',
-           success:function(e){
-               $('body').html(e);
-           },
-           error:function(e){
-               debugger
-           }
+            url:'/API/custom/custom_add',
+            type:'post',
+            data:{
+                'card':$('#card').val(),
+                'cardType':$('#cardType').val(),
+                'sex':$('#sex').val(),
+                'name':$('#name').val()
+            },
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
+        })
+    })
+    // 查询 
+    $('#custom_sele').on('click',function(){
+        $.ajax({
+            url:'/API/custom/custom_select',
+            type:'post',
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
+        })
+    })
+    //修改
+    $('#custom_updata').on('click',function(){
+        $.ajax({
+            url:'/API/custom/updata_',
+            type:'post',
+            data:{
+                'ID':1,
+                'card':$('#card').val(),
+                'cardType':$('#cardType').val(),
+                'sex':$('#sex').val(),
+                'name':$('#name').val()
+            },
+            success:function(e){
+                debugger
+            },
+            error:function(e){
+                debugger
+            }
         })
     })
 </script>
+<!-- 订单 -->
 
 </html>
